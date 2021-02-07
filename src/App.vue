@@ -1,11 +1,17 @@
 <template>
 <v-app>
   <v-app-bar app color="secondary" dark>
-    <div class="d-flex align-center">
-      Recipes Lite (c)
-    </div>
-    <span style="margin-left:5px; padding-top: 6px; font-size:xx-small"> Powered by Spoonacular </span>
-    <v-spacer></v-spacer>
+    <v-row>
+      <v-col cols="4">
+        <div class="d-flex align-center">
+        Recipes Lite (c)
+        <span style="margin-left:5px; padding-top: 6px; font-size:xx-small"> No blog, no fuss. Just recipes done right. . . RecipesLite. Powered by Spoonacular </span>
+        </div>
+      </v-col>
+      <v-col cols="4">
+        <v-text-field @keydown.enter="searchRecipes" class="mx-auto" v-model="query" label="Search recipes"> </v-text-field>
+      </v-col>
+  </v-row>
     <div>
       <v-btn class="mx-2" color="primary" @click="getRecipe"> Get Random Recipe </v-btn>
       <v-menu v-show="showFilters" v-model="showFilters" :close-on-content-click="false">
@@ -20,35 +26,32 @@
             <v-btn text @click="showFilters = false"> X </v-btn>
           </v-card-title>
           <v-card-text>
-            <v-row>
-              <v-col>
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-select label="Diet" :items="diets" item-text="item" v-model="filters.diet"></v-select>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-btn class="error" text x-small @click="filters.diet = null"> X </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-select label="Cuisine" :items="cuisine" item-text="item" v-model="filters.cuisine"></v-select>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      <v-btn class="error" text x-small @click="filters.cuisine = null"> X </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
+            <v-list dense>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-select label="Diet" :items="diets" item-text="item" v-model="filters.diet"></v-select>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-btn class="error" text x-small @click="filters.diet = null"> X </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-select label="Cuisine" :items="cuisine" item-text="item" v-model="filters.cuisine"></v-select>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-btn class="error" text x-small @click="filters.cuisine = null"> X </v-btn>
+                </v-list-item-action>
+              </v-list-item>
                 </v-list>
-              </v-col>
-            </v-row>
           </v-card-text>
         </v-card>
       </v-menu>
     </div>
   </v-app-bar>
   <v-main>
-    <v-card>
+
+    <v-card v-if="recipe.id">
       <v-container class="px-auto">
         <v-card-text>
           <v-row justify="center">
@@ -79,6 +82,20 @@
           </v-card-text>
       </v-container>
     </v-card>
+
+    <v-card v-if="recipeList.length">
+      <v-container>
+        <v-card-text>
+          <v-list>
+            <v-list-item v-for="(item, i) in recipeList" :key="i">
+              <v-list-item-title> {{ item.title }} </v-list-item-title>
+              <v-list-item-content> {{ item.servings }}</v-list-item-content>
+
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+      </v-container>
+    </v-card>
   </v-main>
 </v-app>
 </template>
@@ -91,7 +108,9 @@ export default {
   components: {icon},
   name: 'App',
   data: () => ({
+    query: "",
     showFilters: false,
+    recipeList: [],
     recipe: {
       steps: [],
       ingredients: [],
@@ -105,7 +124,7 @@ export default {
       sourceLink: null,
     },
     filters: {
-      diet: null,
+      diet: "",
       cuisine: null
     },
     diets: [
@@ -155,6 +174,36 @@ export default {
         .catch(function(error) {
           console.error(error);
         });
+    },
+    autocompleteSearch(){
+
+    },
+  searchRecipes(){
+    console.log("hit it!", this.query);
+    const options = {
+      method: 'GET',
+      url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search',
+      params: {
+        query: this.query,
+        diet: '',
+        excludeIngredients: 'coconut',
+        intolerances: 'egg, gluten',
+        number: '10',
+        offset: '0',
+        type: 'main course'
+      },
+      headers: {
+        'x-rapidapi-key': 'c76391c1abmsh387ecc72c8ad90ep153afajsne72875284088',
+        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+        }
+      }
+      console.log(options);
+      axios.request(options).then((response) => {
+        console.log(response.data.results);
+        this.recipeList = response.data.results;
+      }).catch(function (error) {
+        console.error(error);
+      });
     }
   }
 };
