@@ -13,7 +13,7 @@
       </v-col>
   </v-row>
     <div>
-      <v-btn class="mx-2" color="primary" @click="getRecipe"> Get Random Recipe </v-btn>
+      <v-btn class="mx-2" color="primary" @click="getRandomRecipe()"> Get Random Recipe </v-btn>
       <v-menu v-show="showFilters" v-model="showFilters" :close-on-content-click="false">
         <template v-slot:activator="{ on }">
           <v-btn color="secondary" v-on="on" icon>
@@ -50,7 +50,6 @@
     </div>
   </v-app-bar>
   <v-main>
-
     <v-card v-if="recipe.id">
       <v-container class="px-auto">
         <v-card-text>
@@ -58,8 +57,12 @@
             <h1> {{ recipe.title }} </h1>
           </v-row>
           <v-row class="pt-2" justify="center">
-            <span class="text-button"> From: {{ recipe.sourceName }} </span>
-            <v-btn outlined color="primary" class="ml-2" text :href="recipe.sourceUrl"> Visit Site </v-btn>
+            <v-tooltip right>
+              <template v-slot:activator="{ on }">
+                <v-btn :href="recipe.sourceUrl" v-on="on" text> From {{ recipe.sourceName }} </v-btn>
+              </template>
+              <span> Visit Site </span>
+            </v-tooltip>
             <v-spacer></v-spacer>
             <icon title="Vegan" :disabled="!recipe.vegan" icon="leaf"></icon>
             <icon title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot"></icon>
@@ -87,10 +90,11 @@
       <v-container>
         <v-card-text>
           <v-list>
-            <v-list-item v-for="(item, i) in recipeList" :key="i">
-              <v-list-item-title> {{ item.title }} </v-list-item-title>
-              <v-list-item-content> {{ item.servings }}</v-list-item-content>
-
+            <v-list-item @click="getRecipe(item.id)" v-for="(item, i) in recipeList" :key="i">
+              <v-list-item-content>
+                <v-list-item-title> {{ item.title }} </v-list-item-title>
+                <v-list-item-subtitle> Makes {{ item.servings }} servings || Ready in {{ Math.ceil(item.readyInMinutes / 60) }} hours </v-list-item-subtitle>
+            </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-card-text>
@@ -142,10 +146,29 @@ export default {
     }
   },
   methods: {
-    getRecipe() {
+    getRandomRecipe(){
       const options = {
         method: 'GET',
         url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+        params: {number: '1', tags: this.filters},
+        headers: {
+          'x-rapidapi-key': 'c76391c1abmsh387ecc72c8ad90ep153afajsne72875284088',
+          'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
+        }
+      };
+
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+      this.mapRecipe(response.data)
+    }).catch(function (error) {
+      console.error(error);
+    });
+
+    },
+    getRecipe(recipeId) {
+      const options = {
+        method: 'GET',
+        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
         params: {
           number: '1'
         },
@@ -157,29 +180,17 @@ export default {
 
       axios.request(options)
         .then((response) => {
+          this.recipeList = [];
           console.log(response.data);
-          let recipe = response.data.recipes[0]
-          this.recipe.steps = recipe.analyzedInstructions[0].steps;
-          this.recipe.ingredients = recipe.extendedIngredients
-          this.recipe.image = recipe.image
-          this.recipe.title = recipe.title
-          this.recipe.vegan = recipe.vegan
-          this.recipe.vegetarian = recipe.vegetarian
-          this.recipe.glutenFree = recipe.glutenFree
-          this.recipe.dairyFree = recipe.dairyFree
-          this.recipe.sourceName = recipe.sourceName
-          this.recipe.sourceUrl = recipe.sourceUrl
-          console.log(response.data.recipes[0].image)
+          this.mapRecipe(response.data)
         })
         .catch(function(error) {
           console.error(error);
         });
     },
-    autocompleteSearch(){
-
-    },
   searchRecipes(){
     console.log("hit it!", this.query);
+    this.recipe = {};
     const options = {
       method: 'GET',
       url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search',
@@ -204,6 +215,20 @@ export default {
       }).catch(function (error) {
         console.error(error);
       });
+    },
+
+    mapRecipe(recipe){
+      this.recipe.steps = recipe.analyzedInstructions[0].steps;
+      this.recipe.id = recipe.id;
+      this.recipe.ingredients = recipe.extendedIngredients
+      this.recipe.image = recipe.image
+      this.recipe.title = recipe.title
+      this.recipe.vegan = recipe.vegan
+      this.recipe.vegetarian = recipe.vegetarian
+      this.recipe.glutenFree = recipe.glutenFree
+      this.recipe.dairyFree = recipe.dairyFree
+      this.recipe.sourceName = recipe.sourceName
+      this.recipe.sourceUrl = recipe.sourceUrl
     }
   }
 };
