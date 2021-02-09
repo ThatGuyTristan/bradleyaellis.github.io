@@ -124,8 +124,8 @@ export default {
       sourceLink: null,
     },
     filters: {
-      diet: "",
-      cuisine: null
+      diet: null,
+      cuisine: null,
     },
     diets: [
       { text:"Dairy Free", value: "dairy free" },
@@ -139,13 +139,11 @@ export default {
     getRandomRecipe(){
       const options = {
         method: 'GET',
-        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+        url: 'recipes/random',
         params: {number: '1'},
-        headers: {
-          'x-rapidapi-key': 'c76391c1abmsh387ecc72c8ad90ep153afajsne72875284088',
-          'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-        }
       };
+
+      console.log(options);
 
       axios.request(options).then((response) => {
         console.log(response.data.recipes[0]);
@@ -157,14 +155,7 @@ export default {
     getRecipe(recipeId) {
       const options = {
         method: 'GET',
-        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
-        params: {
-          number: '1'
-        },
-        headers: {
-          'x-rapidapi-key': 'c76391c1abmsh387ecc72c8ad90ep153afajsne72875284088',
-          'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-        }
+        url: `recipes/${recipeId}/information`,
       };
 
       axios.request(options)
@@ -178,28 +169,19 @@ export default {
         });
     },
   searchRecipes(){
-    console.log("hit it!", this.query);
     this.recipe = {};
     const options = {
       method: 'GET',
-      url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search',
+      url: 'recipes/search',
       params: {
         query: this.query,
         diet: '',
-        excludeIngredients: 'coconut',
-        intolerances: 'egg, gluten',
         number: '10',
         offset: '0',
         type: 'main course'
       },
-      headers: {
-        'x-rapidapi-key': 'c76391c1abmsh387ecc72c8ad90ep153afajsne72875284088',
-        'x-rapidapi-host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com'
-        }
-      }
-      console.log(options);
+    }
       axios.request(options).then((response) => {
-        console.log(response.data.results);
         this.recipeList = response.data.results;
       }).catch(function (error) {
         console.error(error);
