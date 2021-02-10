@@ -5,17 +5,19 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "server -s build"
   },
   "dependencies": {
     "aaxios": "^0.18.1",
     "axios": "^0.21.1",
-    "core-js": "^3.6.5",
+    "core-js": "^3.8.3",
     "lint": "^0.7.0",
     "prettier-eslint": "^12.0.0",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.1.0",
     "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {
