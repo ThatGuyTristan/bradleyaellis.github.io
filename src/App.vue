@@ -135,6 +135,9 @@ export default {
     ],
     cuisines: []
   }),
+  beforeMount(){
+    this.getRandomRecipe();
+  },
   methods: {
     getRandomRecipe(){
       const options = {
