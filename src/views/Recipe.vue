@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.justify-center(v-if="recipe.id" rounded elevation="12")
+  v-card.justify-center(rounded elevation="12")
     v-card-text
       v-row.mx-auto
         v-col.mx-auto.justify-center.text-center(cols="8")
@@ -12,10 +12,10 @@
             span Visit Site
         v-col.mx-auto.justify-center.text-center(cols="3")
           v-spacer
-          icon(title="Vegan" :disabled="!recipe.vegan" icon="leaf")
-          icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
-          icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
-          icon(title="Dairy Free" :disabled="!recipe.dairyFree" icon="cow")
+          //- icon(title="Vegan" :disabled="!recipe.vegan" icon="leaf")
+          //- icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
+          //- icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
+          //- icon(title="Dairy Free" :disabled="!recipe.dairyFree" icon="cow")
       v-row.px-2(justify="center")
         v-col.mt-2(cols="4")
           v-row(v-if="recipe.image")
@@ -35,20 +35,43 @@
 
 <script>
 import axios from "axios";
+import { eventBus } from "@/main"
 
 export default {
+  data: () => ({
+    recipe: {},
+  }),
+  computed: {
+    id(){
+      return this.$route.params.id;
+    }
+  },
+  created(){
+    eventBus.$on('getRecipe', (data) => {
+      this.getRecipe(data);
+    })
+  },
   methods: {
-        getRecipe(recipeId) {
+    getRecipe(recipeId) {
+      let url = ''
+      if (recipeId == 'random'){
+        url = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random'
+      } else {
+        url = `recipes/${recipeId}/information`
+      }
+
       const options = {
         method: 'GET',
-        url: `recipes/${recipeId}/information`,
+        url: url,
+        params: {
+          number: '1'
+        }
       };
 
       axios.request(options)
         .then((response) => {
-          this.recipeList = [];
-          console.log(response.data);
-          this.mapRecipe(response.data)
+          console.log("Hi mom", response.data.recipes[0]);
+          this.mapRecipe(response.data.recipes[0])
         })
         .catch(function(error) {
           console.error(error);

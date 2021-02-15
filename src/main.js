@@ -11,6 +11,7 @@ axios.defaults.headers.common["useQueryString"] = true
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.config.productionTip = false
 
+export const eventBus = new Vue();
 
 Vue.use(VueAxios, axios)
 
@@ -19,3 +20,4 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
+

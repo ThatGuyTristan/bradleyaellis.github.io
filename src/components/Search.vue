@@ -1,12 +1,16 @@
 <template lang="pug">
   div.justify-center
-    portal(to="mainBar")
-      v-text-field.mt-auto(
-          @keydown.enter="searchRecipes"
-          v-model="query"
-          label="Search recipes..."
-      )
-      v-btn(@click="searchRecipes") Search
+    v-text-field(
+        clearable
+        outlined
+        single-line
+        @keydown.enter="searchRecipes"
+        v-model="query"
+        hint="Search recipes..."
+        persistent-hint
+        append-icon="mdi-search"
+        @click:prepend="searchRecipes"
+    )
 </template>
 
 <script>
@@ -14,7 +18,8 @@ import axios from "axios"
 
 export default {
   data: () => ({
-    query: ""
+    query: "",
+    recipeList: []
   }),
   methods: {
     searchRecipes(){
