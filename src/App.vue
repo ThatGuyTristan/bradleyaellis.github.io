@@ -2,15 +2,12 @@
     v-app
       v-app-bar(app color="secondary" dark)
         v-row
-            v-col(cols="4")
-                div.d-flex.align-center Recipes Lite
-                span.caption No blog, no fuss. Recipes done right. Recipes Lite
-            v-col(cols="4")
-                v-text-field.mt-auto(
-                    @keydown.enter="searchRecipes"
-                    v-model="query"
-                    label="Search recipes..."
-                )
+          v-col(cols="4")
+              div.d-flex.align-center Recipes Lite
+              span.caption No blog, no fuss. Recipes done right. Recipes Lite
+          v-col(cols="4")
+          portal-target(name="mainBar")
+
         div(class="justify-center")
             v-btn.mx-2(color="primary" @click="getRandomRecipe") Get Random Recipe
             v-menu(v-model="showFilters" :close-on-content-click="false")
@@ -56,47 +53,6 @@
                                         @click="filters.cuisines = ''"
                                       ) Clear
       v-main
-        v-card.justify-center(v-if="recipe.id" rounded elevation="12")
-          v-card-text
-            v-row.mx-auto
-              v-col.mx-auto.justify-center.text-center(cols="8")
-                h1(style="color:blue") {{ recipe.title }}
-            v-row.mx-auto
-              v-col.mx-auto.justify-center.text-center(cols="4")
-                v-tooltip(right)
-                  template(v-slot:activator="{ on }")
-                    v-btn(:href="recipe.sourceUrl" v-on="on" text) From {{ recipe.sourceName }}
-                  span Visit Site
-              v-col.mx-auto.justify-center.text-center(cols="4")
-                v-spacer
-                icon(title="Vegan" :disabled="!recipe.vegan" icon="leaf")
-                icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
-                icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
-                icon(title="Dairy Free" :disabled="!recipe.dairyFree" icon="cow")
-            v-row.px-2(justify="center")
-              v-col.mt-2(cols="4")
-                v-row(v-if="recipe.image")
-                  v-img(:src="recipe.image" contain)
-              v-col.px-4(cols="4")
-                v-row
-                  v-list(dense)
-                    v-list-item.my-n4(
-                      v-for="(ingredient, i) in recipe.ingredients"
-                      :key="i"
-                    )
-                      v-list-item-title {{ ingredient.originalString }}
-            v-row(justify="center")
-              v-col.mx-2.mt-2(cols="8")
-                v-row(v-for="(step, i) in recipe.steps" :key="i") <b> Step {{i+1}} </b> {{ step.step }}
-
-        v-card(v-if="recipeList.length")
-          v-card-text
-            v-list
-              v-list-item(@click="getRecipe(item.id)" v-for="(item, i) in recipeList" :key="i")
-                v-list-item-content
-                  v-list-item-title {{ item.title }}
-                  v-list-item-subtitle Makes {{ item.servings }} | Ready in {{ item.readyInMinutes }} minutes
-
 </template>
 
 <script>
