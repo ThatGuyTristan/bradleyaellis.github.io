@@ -7,60 +7,19 @@
               span.caption No blog, no fuss. Recipes done right. Recipes Lite
           v-col(cols="4")
           portal-target(name="mainBar")
-
-        div(class="justify-center")
-            v-btn.mx-2(color="primary" @click="getRandomRecipe") Get Random Recipe
-            v-menu(v-model="showFilters" :close-on-content-click="false")
-                template(v-slot:activator="{ on }")
-                    v-btn(color="secondary" v-on="on" icon)
-                        v-icon(color="white") mdi-filter-menu
-                v-card
-                  v-container.px-auto
-                    v-card-title Recipe Filters
-                        v-spacer
-                        v-btn(text @click="showFilters = false") X
-                    v-card-text
-                        v-list(dense)
-                            v-list-item
-                                v-list-item-content
-                                    v-select(
-                                        label="Diet"
-                                        :items="diets"
-                                        item-text="item"
-                                        v-model="filters.diet"
-                                    )
-                                v-list-item-action
-                                    v-btn(
-                                        class="error"
-                                        x-small
-                                        text
-                                        @click="filters.diet = ''"
-                                    ) Clear
-                            v-list-item
-                              v-list-item
-                                v-list-item-content
-                                    v-select(
-                                        label="Cuisine"
-                                        :items="cuisines"
-                                        item-text="item"
-                                        v-model="filters.cuisines"
-                                    )
-                                v-list-item-action
-                                    v-btn(
-                                        class="error"
-                                        x-small
-                                        text
-                                        @click="filters.cuisines = ''"
-                                      ) Clear
+            Search
+            Random(:showFilters="false")
       v-main
 </template>
 
 <script>
 import axios from "axios";
+import Search from "@/components/Search.vue"
+import Random from "@/components/Random.vue"
 import icon from "@/components/icon"
 
 export default {
-  components: {icon},
+  components: {icon, Search, Random},
   name: 'App',
   data: () => ({
     query: "",
@@ -111,56 +70,6 @@ export default {
         console.error(error);
       });
     },
-    getRecipe(recipeId) {
-      const options = {
-        method: 'GET',
-        url: `recipes/${recipeId}/information`,
-      };
-
-      axios.request(options)
-        .then((response) => {
-          this.recipeList = [];
-          console.log(response.data);
-          this.mapRecipe(response.data)
-        })
-        .catch(function(error) {
-          console.error(error);
-        });
-    },
-  searchRecipes(){
-    this.recipe = {};
-    const options = {
-      method: 'GET',
-      url: 'recipes/search',
-      params: {
-        query: this.query,
-        diet: '',
-        number: '10',
-        offset: '0',
-        type: 'main course'
-      },
-    }
-      axios.request(options).then((response) => {
-        this.recipeList = response.data.results;
-      }).catch(function (error) {
-        console.error(error);
-      });
-    },
-
-    mapRecipe(recipe){
-      console.log("Hello", recipe);
-      this.recipe.id = recipe.id;
-      this.recipe.steps = recipe.analyzedInstructions[0].steps;
-      this.recipe.ingredients = recipe.extendedIngredients
-      this.recipe.image = recipe.image
-      this.recipe.title = recipe.title
-      this.recipe.vegan = recipe.vegan
-      this.recipe.vegetarian = recipe.vegetarian
-      this.recipe.glutenFree = recipe.glutenFree
-      this.recipe.dairyFree = recipe.dairyFree
-      this.recipe.sourceName = recipe.sourceName
-      this.recipe.sourceUrl = recipe.sourceUrl
-    }
   }
 };
 </script>

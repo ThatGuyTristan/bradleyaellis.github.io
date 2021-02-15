@@ -34,5 +34,40 @@
 </template>
 
 <script>
+import axios from "axios";
 
+export default {
+  methods: {
+        getRecipe(recipeId) {
+      const options = {
+        method: 'GET',
+        url: `recipes/${recipeId}/information`,
+      };
+
+      axios.request(options)
+        .then((response) => {
+          this.recipeList = [];
+          console.log(response.data);
+          this.mapRecipe(response.data)
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    },
+    mapRecipe(recipe){
+      console.log("Hello", recipe);
+      this.recipe.id = recipe.id;
+      this.recipe.steps = recipe.analyzedInstructions[0].steps;
+      this.recipe.ingredients = recipe.extendedIngredients
+      this.recipe.image = recipe.image
+      this.recipe.title = recipe.title
+      this.recipe.vegan = recipe.vegan
+      this.recipe.vegetarian = recipe.vegetarian
+      this.recipe.glutenFree = recipe.glutenFree
+      this.recipe.dairyFree = recipe.dairyFree
+      this.recipe.sourceName = recipe.sourceName
+      this.recipe.sourceUrl = recipe.sourceUrl
+    }
+  }
+}
 </script>
