@@ -54,7 +54,13 @@ export default {
     }
   },
   beforeMount(){
-    this.id ? this.getRecipe(this.id) : this.getRandomRecipe()
+    if (this.id === 'random'){
+      this.getRandomRecipe()
+    } else if (this.id) {
+      this.getRecipe(this.id)
+    } else {
+      this.getRandomRecipe()
+    }
   },
   created(){
     eventBus.$on('getRecipe', (data) => {
@@ -63,6 +69,7 @@ export default {
   },
   methods: {
     getRandomRecipe(){
+      console.log("Getting random recipe");
       const options = {
         method: 'GET',
         url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
@@ -81,7 +88,6 @@ export default {
       });
     },
     getRecipe(recipeId) {
-      console.log(recipeId);
       const options = {
         method: 'GET',
         url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,

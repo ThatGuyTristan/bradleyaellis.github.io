@@ -13,7 +13,6 @@ export default {
   methods: {
     getRandomRecipe(){
       let url = 'random';
-      console.log("hi?");
       eventBus.$emit('getRecipe', url);
     }
   }
