@@ -1,62 +1,26 @@
 <template lang="pug">
     v-app
-      v-app-bar(app color="secondary" dark)
-        v-row
-            v-col(cols="4")
-                div.d-flex.align-center Recipes Lite
-                span.caption No blog, no fuss. Recipes done right. Recipes Lite
-            v-col(cols="4")
-                v-text-field.mt-auto(
-                    @keydown.enter="searchRecipes"
-                    v-model="query"
-                    label="Search recipes..."
+      v-app-bar(app color="success" dark clipped-right)
+        v-row.flex-row.px-auto
+            v-col.d-flex.justify-start(cols="4")
+                  div.d-flex.align-center Recipes Lite
+                  div.d-flex.align-center.caption(v-if="!$vuetify.breakpoint.xs") No blog, no fuss. Recipes done right. Recipes Lite
+            v-col.d-flex.justify-center(cols="4")
+                v-text-field.d-flex.align-center(
+                  hide-details
+                  dense
+                  @keydown.enter="searchRecipes"
+                  v-model="query"
+                  placeholder="Search recipes..."
+                  prepend-inner-icon="mdi-magnify"
                 )
-        div(class="justify-center")
-            v-btn.mx-2(color="primary" @click="getRandomRecipe") Get Random Recipe
-            v-menu(v-model="showFilters" :close-on-content-click="false")
-                template(v-slot:activator="{ on }")
-                    v-btn(color="secondary" v-on="on" icon)
-                        v-icon(color="white") mdi-filter-menu
-                v-card
-                  v-container.px-auto
-                    v-card-title Recipe Filters
-                        v-spacer
-                        v-btn(text @click="showFilters = false") X
-                    v-card-text
-                        v-list(dense)
-                            v-list-item
-                                v-list-item-content
-                                    v-select(
-                                        label="Diet"
-                                        :items="diets"
-                                        item-text="item"
-                                        v-model="filters.diet"
-                                    )
-                                v-list-item-action
-                                    v-btn(
-                                        class="error"
-                                        x-small
-                                        text
-                                        @click="filters.diet = ''"
-                                    ) Clear
-                            v-list-item
-                              v-list-item
-                                v-list-item-content
-                                    v-select(
-                                        label="Cuisine"
-                                        :items="cuisines"
-                                        item-text="item"
-                                        v-model="filters.cuisines"
-                                    )
-                                v-list-item-action
-                                    v-btn(
-                                        class="error"
-                                        x-small
-                                        text
-                                        @click="filters.cuisines = ''"
-                                      ) Clear
+            v-col.d-flex.justify-end(cols="4")
+              v-btn(v-if="!$vuetify.breakpoint.xs" color="primary" @click="getRandomRecipe") Get Random Recipe
+              v-btn(v-else color="primary" @click="getRandomRecipe" icon)
+                v-icon mdi-dice-multiple-outline
+              v-menu(v-if="!$vuetify.breakpoint.xs" v-model="showFilters" :close-on-content-click="false")
       v-main
-        v-card.justify-center(v-if="recipe.id" rounded elevation="12")
+        v-card.justify-center(:loading="loading" v-if="recipe.id" rounded elevation="12")
           v-card-text
             v-row.mx-auto
               v-col.mx-auto.justify-center.text-center(cols="8")
@@ -87,7 +51,9 @@
                       v-list-item-title {{ ingredient.originalString }}
             v-row(justify="center")
               v-col.mx-2.mt-2(cols="8")
-                v-row(v-for="(step, i) in recipe.steps" :key="i") <b> Step {{i+1}} </b> {{ step.step }}
+                v-row(v-for="(step, i) in recipe.steps" :key="i")
+                  .body-1.font-weight-bold Step {{i+1}}
+                  .body-2.ml-3 {{ step.step }}
 
         v-card(v-if="recipeList.length")
           v-card-text
@@ -107,6 +73,7 @@ export default {
   components: {icon},
   name: 'App',
   data: () => ({
+    loading: false,
     query: "",
     showFilters: false,
     recipeList: [],
@@ -140,6 +107,7 @@ export default {
   },
   methods: {
     getRandomRecipe(){
+      this.loading = true;
       const options = {
         method: 'GET',
         url: 'recipes/random',
@@ -153,7 +121,7 @@ export default {
         this.mapRecipe(response.data.recipes[0])
       }).catch(function (error) {
         console.error(error);
-      });
+      }).finally(this.loading = false);
     },
     getRecipe(recipeId) {
       const options = {
