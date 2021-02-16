@@ -39,7 +39,9 @@ import { eventBus } from "@/main"
 
 export default {
   data: () => ({
-    recipe: {},
+    recipe: {
+      title: ""
+    },
   }),
   components: {
     "icon": () => import("@/components/icon")
