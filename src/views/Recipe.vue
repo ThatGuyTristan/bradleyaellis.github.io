@@ -12,10 +12,10 @@
             span Visit Site
         v-col.mx-auto.justify-center.text-center(cols="3")
           v-spacer
-          //- icon(title="Vegan" :disabled="!recipe.vegan" icon="leaf")
-          //- icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
-          //- icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
-          //- icon(title="Dairy Free" :disabled="!recipe.dairyFree" icon="cow")
+          icon(title="Vegan" :disabled="!recipe.vegan" icon="leaf")
+          icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
+          icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
+          icon(title="Dairy Free" :disabled="!recipe.dairyFree" icon="cow")
       v-row.px-2(justify="center")
         v-col.mt-2(cols="4")
           v-row(v-if="recipe.image")
@@ -41,10 +41,16 @@ export default {
   data: () => ({
     recipe: {},
   }),
+  components: {
+    "icon": () => import("@/components/icon")
+  },
   computed: {
     id(){
       return this.$route.params.id;
     }
+  },
+  beforeMount(){
+    this.getRecipe('random')
   },
   created(){
     eventBus.$on('getRecipe', (data) => {
@@ -70,7 +76,6 @@ export default {
 
       axios.request(options)
         .then((response) => {
-          console.log("Hi mom", response.data.recipes[0]);
           this.mapRecipe(response.data.recipes[0])
         })
         .catch(function(error) {
@@ -78,7 +83,6 @@ export default {
         });
     },
     mapRecipe(recipe){
-      console.log("Hello", recipe);
       this.recipe.id = recipe.id;
       this.recipe.steps = recipe.analyzedInstructions[0].steps;
       this.recipe.ingredients = recipe.extendedIngredients
@@ -90,6 +94,7 @@ export default {
       this.recipe.dairyFree = recipe.dairyFree
       this.recipe.sourceName = recipe.sourceName
       this.recipe.sourceUrl = recipe.sourceUrl
+      console.log("Recipe after map:", this.recipe);
     }
   }
 }

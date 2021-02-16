@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/recipes/:id',
+    path: '/',
     name: 'Recipe',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Recipe.vue')
   },

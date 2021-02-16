@@ -10,7 +10,7 @@
           v-col(cols="4")
             Random
       v-main
-        router-view
+        router-view(:key="$route.FullPath")
 </template>
 
 <script>

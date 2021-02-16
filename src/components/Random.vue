@@ -4,15 +4,15 @@
 </template>
 
 <script>
-  import { eventBus } from "@/main"
+import { eventBus } from "@/main";
 
-  export default {
-    methods: {
-      getRandomRecipe(){
-        console.log("hi?");
-        eventBus.$emit('getRecipe', 'random');
-      }
+export default {
+  methods: {
+    getRandomRecipe(){
+      let url = 'random';
+      console.log("hi?");
+      eventBus.$emit('getRecipe', url);
     }
   }
-
+}
 </script>
