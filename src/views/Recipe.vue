@@ -30,7 +30,9 @@
                 v-list-item-title {{ ingredient.originalString }}
       v-row(justify="center")
         v-col.mx-2.mt-2(cols="8")
-          v-row(v-for="(step, i) in recipe.steps" :key="i") <b> Step {{i+1}} </b> {{ step.step }}
+          v-row(v-for="(step, i) in recipe.steps" :key="i")
+            .body-1.font-weight-bold Step {{i+1}}
+            .body-2.ml-3 {{ step.step }}
 </template>
 
 <script>
