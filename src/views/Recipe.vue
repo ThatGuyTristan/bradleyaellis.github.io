@@ -50,11 +50,17 @@ export default {
   },
   computed: {
     id(){
-      return this.$route.params.id;
+      return this.$route.params.id
     }
   },
   beforeMount(){
-    this.getRecipe('random')
+    if (this.id === 'random'){
+      this.getRandomRecipe()
+    } else if (this.id) {
+      this.getRecipe(this.id)
+    } else {
+      this.getRandomRecipe()
+    }
   },
   created(){
     eventBus.$on('getRecipe', (data) => {
@@ -62,17 +68,11 @@ export default {
     })
   },
   methods: {
-    getRecipe(recipeId) {
-      let url = ''
-      if (recipeId == 'random'){
-        url = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random'
-      } else {
-        url = `recipes/${recipeId}/information`
-      }
-
+    getRandomRecipe(){
+      console.log("Getting random recipe");
       const options = {
         method: 'GET',
-        url: url,
+        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
         params: {
           number: '1'
         }
@@ -80,7 +80,26 @@ export default {
 
       axios.request(options)
         .then((response) => {
-          this.mapRecipe(response.data.recipes[0])
+        console.log("RANDOM RESPONSE", response)
+        this.mapRecipe(response.data.recipes[0])
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+    },
+    getRecipe(recipeId) {
+      const options = {
+        method: 'GET',
+        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+        params: {
+          number: '1'
+        }
+      };
+
+      axios.request(options)
+        .then((response) => {
+          console.log("ID RESPONSE", response)
+          this.mapRecipe(response.data)
         })
         .catch(function(error) {
           console.error(error);

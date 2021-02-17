@@ -13,16 +13,14 @@
 </template>
 
 <script>
-import { eventBus } from "@/main";
-
 export default {
   data: () => ({
     query: "",
   }),
   methods: {
     searchRecipes(){
-      eventBus.$emit("getRecipe", this.query)
-      }
+      this.$router.replace( {name: "RecipeList", params: { query: this.query } })
+    }
   }
 }
 </script>

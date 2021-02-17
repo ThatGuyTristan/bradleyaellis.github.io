@@ -4,7 +4,7 @@
         v-row.flex-row.px-auto
           v-col.d-flex.flex-column.justify-start.mt-2(cols="4")
             title.d-flex.align-start Recipes Lite
-            subtitle.d-flex.align-end.caption(v-if="!$vuetify.breakpoint.xs") No blog, no fuss. Recipes done right. Recipes Lite
+            caption.d-flex.align-end.caption(v-if="!$vuetify.breakpoint.xs") No blog, no fuss. Recipes done right. Recipes Lite
           v-col.d-flex.justify-center(cols="4")
             Search
           v-col.d-flex.justify-end(cols="4")
