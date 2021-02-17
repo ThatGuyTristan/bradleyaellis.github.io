@@ -23,11 +23,11 @@
         v-col.px-4(cols="4")
           v-row
             v-list(dense)
-              v-list-item.my-n4(
+              v-list-item.my-n1(
                 v-for="(ingredient, i) in recipe.ingredients"
                 :key="i"
               )
-                v-list-item-title {{ ingredient.originalString }}
+                v-list-item-title.text-wrap {{ ingredient.originalString }}
       v-row(justify="center")
         v-col.mx-2.mt-2(cols="8")
           v-row(v-for="(step, i) in recipe.steps" :key="i")
