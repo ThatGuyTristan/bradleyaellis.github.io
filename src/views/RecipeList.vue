@@ -14,6 +14,7 @@
 
 <script>
 import axios from "axios"
+import { eventBus } from "@/main"
 
 export default {
   data: () => ({
@@ -25,7 +26,9 @@ export default {
     }
   },
   created(){
-    this.searchRecipes(this.query)
+    eventBus.$on('searchRecipe', (query) => {
+      this.searchRecipes(query)
+    })
   },
   watch:{
     query(){

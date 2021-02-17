@@ -72,7 +72,7 @@ export default {
       console.log("Getting random recipe");
       const options = {
         method: 'GET',
-        url: 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random',
+        url: '/recipes/random',
         params: {
           number: '1'
         }
@@ -90,7 +90,7 @@ export default {
     getRecipe(recipeId) {
       const options = {
         method: 'GET',
-        url: `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
+        url: `recipes/${recipeId}/information`,
         params: {
           number: '1'
         }
