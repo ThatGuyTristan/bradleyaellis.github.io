@@ -25,10 +25,12 @@ export default {
     }
   },
   created(){
-    console.log(this.$route.params.query)
-  },
-  beforeMount(){
     this.searchRecipes(this.query)
+  },
+  watch:{
+    query(){
+      this.searchRecipes
+    }
   },
   methods:{
     searchRecipes(){
