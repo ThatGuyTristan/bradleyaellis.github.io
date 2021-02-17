@@ -19,7 +19,7 @@ export default {
   }),
   methods: {
     searchRecipes(){
-      this.$router.replace( {name: "RecipeList", params: { query: this.query } })
+      this.$router.push( {name: "RecipeList", params: { query: this.query } }).catch(() => {})
     }
   }
 }
