@@ -22,26 +22,27 @@ export default {
   }),
   computed: {
     query(){
+      console.log(this.$route.params.query);
       return this.$route.params.query;
     }
   },
   created(){
     eventBus.$on('searchRecipe', (query) => {
       this.searchRecipes(query)
-    })
-  },
+      })
+    },
   watch:{
-    query(){
-      this.searchRecipes
+    query(value){
+      this.searchRecipes(value)
     }
   },
   methods:{
-    searchRecipes(){
+    searchRecipes(query){
       const options = {
         method: 'GET',
         url: 'recipes/search',
         params: {
-          query: this.query,
+          query: this.query ? this.query : query,
           number: '10',
           offset: '0',
         },

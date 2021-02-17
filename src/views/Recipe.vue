@@ -54,25 +54,31 @@ export default {
     }
   },
   beforeMount(){
-    if (this.id === 'random'){
-      this.getRandomRecipe()
-    } else if (this.id) {
-      this.getRecipe(this.id)
-    } else {
-      this.getRandomRecipe()
-    }
+    this.determineRecipe();
   },
   created(){
     eventBus.$on('getRecipe', (data) => {
-      this.getRecipe(data);
+      this.determineRecipe(data);
     })
   },
   methods: {
+    determineRecipe(data){
+      if(this.id){
+        console.log(this.id, "ID")
+        this.getRecipe(this.id)
+      } else if( data == 'random') {
+        console.log('data', data)
+        this.getRandomRecipe()
+      } else {
+        console.log("nadda");
+        this.getRandomRecipe();
+      }
+    },
     getRandomRecipe(){
       console.log("Getting random recipe");
       const options = {
         method: 'GET',
-        url: '/recipes/random',
+        url: 'recipes/random',
         params: {
           number: '1'
         }

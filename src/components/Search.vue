@@ -13,13 +13,23 @@
 </template>
 
 <script>
+import { eventBus } from "@/main"
 export default {
   data: () => ({
     query: "",
   }),
+  created(){
+    console.log(this.$route.name);
+  },
   methods: {
     searchRecipes(){
-      this.$router.push( {name: "RecipeList", params: { query: this.query } }).catch(() => {})
+      if (this.$route.name != 'RecipeList') {
+        console.log("first if", this.query, this.$route.name);
+        this.$router.push( {name: "RecipeList", params: { query: this.query } }).catch(() => {})
+      } else {
+        console.log("else")
+        eventBus.$emit("searchRecipe", this.query);
+      }
     }
   }
 }
