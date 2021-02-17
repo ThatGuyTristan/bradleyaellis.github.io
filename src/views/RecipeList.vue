@@ -7,7 +7,7 @@
             template(v-for="(item, i) in recipeList")
               v-list-item(@click="getRecipe(item.id)" :key="i")
                 v-list-item-content
-                  v-list-item-title {{ item.title }} {{item.id}}
+                  v-list-item-title {{ item.title }}
                   v-list-item-title Makes {{ item.servings }} Servings | Ready in {{ item.readyInMinutes }} minutes
               v-divider
 </template>
