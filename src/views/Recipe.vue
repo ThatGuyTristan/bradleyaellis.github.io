@@ -50,7 +50,9 @@ export default {
   },
   computed: {
     id(){
-      return this.$route.params.id
+      let id;
+       if (this.$route.name != 'Recipe') { id = this.$route.params.id }
+      return id;
     }
   },
   beforeMount(){
