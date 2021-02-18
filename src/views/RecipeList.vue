@@ -26,11 +26,16 @@ export default {
       return this.$route.params.query;
     }
   },
+  beforeMount(){
+    if(this.query) {
+        this.searchRecipes(this.query)
+    }
+  },
   created(){
     eventBus.$on('searchRecipe', (query) => {
       this.searchRecipes(query)
-      })
-    },
+    })
+  },
   watch:{
     query(value){
       this.searchRecipes(value)
