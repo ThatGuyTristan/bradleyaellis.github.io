@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.justify-center(rounded elevation="12")
+  v-card.justify-center.mx-auto(height="100%" width="66%" rounded elevation="12")
     v-card-text
       v-row.mx-auto
         v-col.mx-auto.justify-center.text-center(cols="8")
