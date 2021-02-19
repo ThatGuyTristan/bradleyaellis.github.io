@@ -11,7 +11,7 @@
             Random
         v-row.flex-row.px-auto(v-else)
           v-col.d-flex.flex-column.mt-3(cols="3")
-            header.d-flex.justify-center Recipes Light
+            header.d-flex.justify-center.text-center.ml-0.ml-n3 Recipes Lite
           v-col.d-flex.align-left.py-0(cols="7")
             Search
           v-col.d-flex.justify-end.pr-0(cols="2")
