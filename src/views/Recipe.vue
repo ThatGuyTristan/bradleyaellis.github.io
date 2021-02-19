@@ -76,10 +76,8 @@ export default {
         return time % 60 + " hours"
       }
     },
-    determineRecipe(data){
-      if (data == 'random' || this.id == 'random') {
-        this.getRandomRecipe()
-      } else if(this.id){
+    determineRecipe(){
+      if(this.id){
         this.getRecipe(this.id)
       } else {
         this.getRandomRecipe();

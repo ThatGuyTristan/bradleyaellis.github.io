@@ -16,8 +16,7 @@ export default {
       if (this.$route.name != 'Recipe') {
         this.$router.push( { name: 'Recipe'})
       } else {
-        let url = 'random';
-        eventBus.$emit('getRecipe', url);
+        eventBus.$emit('getRecipe');
       }
     }
   }

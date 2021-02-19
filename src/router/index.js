@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    redirect: {  name: 'Recipe', params: { id: 'random' } }
+    redirect: {  name: 'Recipe' }
   },
   {
     path: '/recipe/:id',
