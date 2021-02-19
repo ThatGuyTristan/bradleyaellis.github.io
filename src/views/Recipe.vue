@@ -1,17 +1,16 @@
 <template lang="pug">
-  v-card.justify-center.mx-auto(height="100%" width="66%" rounded elevation="12")
+  v-card.justify-center.mx-auto(height="100%" :width="width" rounded elevation="12")
     v-card-text
       v-row.mx-auto
         v-col.mx-auto.justify-center.text-center(cols="8")
           h1(style="color:blue") {{ recipe.title }}
       v-row.mx-auto
-        v-col.mx-auto.justify-center.text-center(cols="3")
+        v-col.mx-auto.justify-center.text-center(cols="12" md="3")
           v-tooltip(right)
             template(v-slot:activator="{ on }")
               v-btn(:href="recipe.sourceUrl" v-on="on" text) From {{ recipe.sourceName }}
             span Visit Site
-        v-col.mx-auto.justify-center.text-center(cols="3")
-          v-spacer
+        v-col.mx-auto.justify-center.text-center(cols="12" md="3")
           icon(title="Vegan" :disabled="!recipe.vegan" icon="leaf")
           icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
           icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
@@ -25,12 +24,13 @@
           p.overline.text-center Ready in: {{ findTime(recipe.readyInMinutes) }} || Makes {{ recipe.servings }} Servings
       v-row.ma-0(no-gutters)
         v-col(cols="12")
-          div.ml-16(class="column_wrapper")
+          div.ml-md-16(class="column_wrapper")
             div(
               v-for="(ingredient, i) in recipe.ingredients"
               :key="i"
             )
               div.text-wrap {{ ingredient.originalString }}
+              v-divider
       v-row(justify="center")
         v-col.mx-2.mt-2(cols="8")
           v-row(v-for="(step, i) in recipe.steps" :key="i")
@@ -55,6 +55,9 @@ export default {
   computed: {
     id(){
        return this.$route.params.id
+    },
+    width(){
+      return this.$vuetify.breakpoint.xs ? "100%" :  "66%"
     }
   },
   beforeMount(){
