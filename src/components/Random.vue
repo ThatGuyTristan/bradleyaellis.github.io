@@ -12,11 +12,12 @@ import { eventBus } from "@/main";
 export default {
   methods: {
     getRandomRecipe(){
+      console.log(this.$route.name);
       if (this.$route.name != 'Recipe') {
         this.$router.push( { name: 'Recipe'})
       } else {
-          let url = 'random';
-          eventBus.$emit('getRecipe', url);
+        let url = 'random';
+        eventBus.$emit('getRecipe', url);
       }
     }
   }

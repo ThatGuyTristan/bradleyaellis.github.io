@@ -10,7 +10,12 @@ VueRouter.prototype.push = function push(location){
 
 const routes = [
   {
-    path: '/',
+    path: "/",
+    name: "Home",
+    redirect: "/recipe/random"
+  },
+  {
+    path: '/recipe/:id',
     name: 'Recipe',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Recipe.vue')
   },

@@ -7,8 +7,11 @@
             template(v-for="(item, i) in recipeList")
               v-list-item(@click="getRecipe(item.id)" :key="i")
                 v-list-item-content
-                  v-list-item-title {{ item.title }}
-                  v-list-item-title Makes {{ item.servings }} Servings | Ready in {{ item.readyInMinutes }} minutes
+                  v-list-item-title.font-weight-bold {{ item.title }}
+                  v-list-item-title Makes {{ item.servings }} Servings | Ready in {{ readyIn(item.readyInMinutes) }}
+                v-list-item-action
+                  v-btn(text icon :href="item.sourceUrl")
+                    v-icon.ml-2 mdi-location-enter
               v-divider
 </template>
 
@@ -42,6 +45,15 @@ export default {
     }
   },
   methods:{
+    readyIn(minutes){
+      let time;
+      if (minutes < 60) {
+        time = minutes + " minutes"
+      } else {
+        time = minutes % 60 + " hours"
+      }
+      return time
+    },
     searchRecipes(query){
       const options = {
         method: 'GET',

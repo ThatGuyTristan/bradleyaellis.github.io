@@ -16,23 +16,27 @@
           icon(title="Vegetarian" :disabled="!recipe.vegetarian" icon="carrot")
           icon(title="Gluten Free" :disabled="!recipe.glutenFree" icon="bread-slice")
           icon(title="Dairy Free" :disabled="!recipe.dairyFree" icon="cow")
-      v-row.px-2(justify="center")
-        v-col.mt-2(cols="4")
+      v-row.px-2.justify-center
+        v-col.mt-2(cols="6")
           v-row(v-if="recipe.image")
             v-img(:src="recipe.image" contain)
-        v-col.px-4(cols="4")
-          v-row
-            v-list(dense)
-              v-list-item.my-n1(
-                v-for="(ingredient, i) in recipe.ingredients"
-                :key="i"
-              )
-                v-list-item-title.text-wrap {{ ingredient.originalString }}
+      v-row
+        v-col(cols="12")
+          p.overline.text-center Ready in: {{ findTime(recipe.readyInMinutes) }} || Makes {{ recipe.servings }} Servings
+      v-row.ma-0(no-gutters)
+        v-col(cols="12")
+          div.ml-16(class="column_wrapper")
+            div(
+              v-for="(ingredient, i) in recipe.ingredients"
+              :key="i"
+            )
+              div.text-wrap {{ ingredient.originalString }}
       v-row(justify="center")
         v-col.mx-2.mt-2(cols="8")
           v-row(v-for="(step, i) in recipe.steps" :key="i")
-            .body-1.font-weight-bold Step {{i+1}}
-            .body-2.ml-3 {{ step.step }}
+            v-card-text
+              div.subtitle.font-weight-bold Step {{i+1}}.
+              div.body-2.ml-3.my-0.text-wrap {{ step.step }}
 </template>
 
 <script>
@@ -50,13 +54,11 @@ export default {
   },
   computed: {
     id(){
-      let id;
-       if (this.$route.name != 'Recipe') { id = this.$route.params.id }
-      return id;
+       return this.$route.params.id
     }
   },
   beforeMount(){
-    this.determineRecipe();
+    if(!this.recipe.title) {this.determineRecipe();}
   },
   created(){
     eventBus.$on('getRecipe', (data) => {
@@ -64,15 +66,21 @@ export default {
     })
   },
   methods: {
-    determineRecipe(data){
-      if(this.id){
-        console.log(this.id, "ID")
-        this.getRecipe(this.id)
-      } else if( data == 'random') {
-        console.log('data', data)
-        this.getRandomRecipe()
+    findTime(time){
+      if(time < 60){
+        return time + " minutes";
       } else {
-        console.log("nadda");
+        return time % 60 + " hours"
+      }
+    },
+    determineRecipe(data){
+      console.log('data', data)
+      console.log('id', this. id)
+      if (data == 'random') {
+        this.getRandomRecipe()
+      } else if(this.id){
+        this.getRecipe(this.id)
+      } else {
         this.getRandomRecipe();
       }
     },
@@ -119,14 +127,21 @@ export default {
       this.recipe.ingredients = recipe.extendedIngredients
       this.recipe.image = recipe.image
       this.recipe.title = recipe.title
+      this.recipe.readyInMinutes = recipe.readyInMinutes
+      this.recipe.servings = recipe.servings
       this.recipe.vegan = recipe.vegan
       this.recipe.vegetarian = recipe.vegetarian
       this.recipe.glutenFree = recipe.glutenFree
       this.recipe.dairyFree = recipe.dairyFree
       this.recipe.sourceName = recipe.sourceName
       this.recipe.sourceUrl = recipe.sourceUrl
-      console.log("Recipe after map:", this.recipe);
     }
   }
 }
 </script>
+
+<style scoped>
+.column_wrapper {
+  column-count: 3
+}
+</style>
