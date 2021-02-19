@@ -16,7 +16,6 @@
             Search
           v-col.d-flex.justify-end.pr-0(cols="2")
             Random
-
       v-main
         router-view(:key="$route.FullPath")
 </template>
@@ -27,6 +26,9 @@ import Random from "@/components/Random"
 
 export default {
   components: {Search, Random},
-  name: 'App'
+  name: 'App',
+  mounted(){
+    this.$eventBus.emit("getRecipe", 'random')
+  }
 };
 </script>

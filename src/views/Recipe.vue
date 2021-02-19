@@ -77,9 +77,7 @@ export default {
       }
     },
     determineRecipe(data){
-      console.log('data', data)
-      console.log('id', this. id)
-      if (data == 'random') {
+      if (data == 'random' || this.id == 'random') {
         this.getRandomRecipe()
       } else if(this.id){
         this.getRecipe(this.id)
@@ -88,7 +86,6 @@ export default {
       }
     },
     getRandomRecipe(){
-      console.log("Getting random recipe");
       const options = {
         method: 'GET',
         url: 'recipes/random',
@@ -99,7 +96,6 @@ export default {
 
       axios.request(options)
         .then((response) => {
-        console.log("RANDOM RESPONSE", response)
         this.mapRecipe(response.data.recipes[0])
       })
       .catch(function(error) {
@@ -117,7 +113,6 @@ export default {
 
       axios.request(options)
         .then((response) => {
-          console.log("ID RESPONSE", response)
           this.mapRecipe(response.data)
         })
         .catch(function(error) {
