@@ -15,7 +15,7 @@ const routes = [
     redirect: {  name: 'Recipe' }
   },
   {
-    path: '/recipe/:id',
+    path: '/recipe/',
     name: 'Recipe',
     component: () => import(/* webpackChunkName: "about" */ '@/views/Recipe.vue')
   },

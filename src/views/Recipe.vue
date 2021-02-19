@@ -64,8 +64,8 @@ export default {
     if(!this.recipe.title) {this.determineRecipe();}
   },
   created(){
-    eventBus.$on('getRecipe', (data) => {
-      this.determineRecipe(data);
+    eventBus.$on('getRecipe', () => {
+      this.getRandomRecipe();
     })
   },
   methods: {
