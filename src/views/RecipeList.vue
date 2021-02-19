@@ -7,7 +7,7 @@
             template(v-for="(item, i) in recipeList")
               v-list-item(@click="getRecipe(item.id)" :key="i")
                 v-list-item-content
-                  v-list-item-title.font-weight-bold {{ item.title }}
+                  v-list-item-title.font-weight-bold.text-wrap {{ item.title }}
                   v-list-item-title Makes {{ item.servings }} Servings | Ready in {{ readyIn(item.readyInMinutes) }}
                 v-list-item-action
                   v-btn(text icon :href="item.sourceUrl")
@@ -65,7 +65,7 @@ export default {
         },
       }
       axios.request(options).then((response) => {
-        console.log(response);
+        console.log("Response received.")
         this.recipeList = response.data.results;
       }).catch(function (error) {
         console.error(error);

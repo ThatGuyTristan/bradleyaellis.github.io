@@ -23,12 +23,13 @@
 <script>
 import Search from "@/components/Search"
 import Random from "@/components/Random"
+import { eventBus } from "@/main";
 
 export default {
   components: {Search, Random},
   name: 'App',
   mounted(){
-    this.$eventBus.emit("getRecipe", 'random')
+    eventBus.$emit("getRecipe", 'random')
   }
 };
 </script>

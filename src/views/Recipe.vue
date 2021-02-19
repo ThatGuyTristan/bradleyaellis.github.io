@@ -96,7 +96,8 @@ export default {
 
       axios.request(options)
         .then((response) => {
-        this.mapRecipe(response.data.recipes[0])
+          console.log("Response received.")
+          this.mapRecipe(response.data.recipes[0])
       })
       .catch(function(error) {
         console.error(error);
@@ -113,6 +114,7 @@ export default {
 
       axios.request(options)
         .then((response) => {
+          console.log("Response received.")
           this.mapRecipe(response.data)
         })
         .catch(function(error) {
