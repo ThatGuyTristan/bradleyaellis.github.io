@@ -1,6 +1,6 @@
 <template lang="pug">
     v-app
-      v-app-bar(app color="success" dark)
+      v-app-bar(app color="white" light)
         v-row.flex-row.px-auto(v-if="!$vuetify.breakpoint.xs")
           v-col.d-flex.flex-column.justify-start.mt-2(cols="4")
             title.d-flex.align-start Recipes Lite
