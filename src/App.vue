@@ -1,10 +1,10 @@
 <template lang="pug">
     v-app
-      v-app-bar(app color="white" light)
+      v-app-bar(flat app color="white" light)
         v-row.flex-row.px-auto(v-if="!$vuetify.breakpoint.xs")
           v-col.d-flex.flex-column.justify-start.mt-2(cols="4")
-            title.d-flex.align-start Recipes Lite
-            caption.d-flex.align-end.caption(v-if="!$vuetify.breakpoint.xs") No blog, no fuss. Recipes done right. Recipes Lite
+            title.d-flex.align-start(class="main-logo") Recipes Lite
+            caption.d-flex.align-end(class="main-logo" v-if="!$vuetify.breakpoint.xs") No blog, no fuss. Recipes done right. Recipes Lite
           v-col.d-flex.justify-center(cols="4")
             Search
           v-col.d-flex.justify-end(cols="4")
@@ -33,3 +33,10 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+.main-logo {
+  font-family: "Akaya Kanadaka"
+}
+</style>
