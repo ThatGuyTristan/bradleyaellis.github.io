@@ -35,7 +35,7 @@
         v-col.mx-2.mt-2(cols="8")
           v-row(v-for="(step, i) in recipe.steps" :key="i")
             v-card-text
-              div.subtitle.font-weight-bold Step {{i+1}}.
+              div.subtitle.font-weight-bold Step {{i+1}}
               div.body-2.ml-3.my-0.text-wrap {{ step.step }}
 </template>
 
@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     findTime(time){
-      if(time < 60){
+      if(time <= 60){
         return time + " minutes";
       } else {
         return time % 60 + " hours"
