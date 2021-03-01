@@ -1,10 +1,10 @@
 <template lang="pug">
-  v-card.justify-center.mx-auto(height="100%" :width="width" rounded elevation="8")
+  v-card.justify-center.mx-auto(height="100%" :width="width" elevation="8")
     v-card-text
       v-row.mx-auto
         v-col.mx-auto.justify-center.text-center(cols="8")
           h1(style="color:blue") {{ recipe.title }}
-      v-row.mx-auto
+      v-row.mx-auto.mt-0
         v-col.mx-auto.justify-center.text-center(cols="12" md="3")
           v-tooltip(right)
             template(v-slot:activator="{ on }")

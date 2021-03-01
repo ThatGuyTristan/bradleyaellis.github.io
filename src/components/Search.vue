@@ -2,11 +2,12 @@
   v-text-field.d-flex.align-center(
       clearable
       outlined
+      solo
       dense
       hide-details
       @keydown.enter="searchRecipes"
       v-model="query"
-      placeholder="Search recipes..."
+      placeholder="Search..."
       append-icon="mdi-search"
       @click:prepend="searchRecipes"
   )
@@ -29,3 +30,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/deep/ .v-text-field{
+  width: 75%
+}
+</style>
