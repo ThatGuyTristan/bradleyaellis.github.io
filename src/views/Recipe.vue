@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card.justify-center.mx-auto(height="100%" :width="width" rounded elevation="12")
+  v-card.justify-center.mx-auto(height="100%" :width="width" rounded elevation="8")
     v-card-text
       v-row.mx-auto
         v-col.mx-auto.justify-center.text-center(cols="8")
@@ -23,14 +23,12 @@
         v-col(cols="12")
           p.overline.text-center Ready in: {{ findTime(recipe.readyInMinutes) }} || Makes {{ recipe.servings }} Servings
       v-row.ma-0(no-gutters)
-        v-col(cols="12")
-          div.ml-md-16(class="column_wrapper")
-            div(
-              v-for="(ingredient, i) in recipe.ingredients"
-              :key="i"
-            )
-              div.text-wrap {{ ingredient.originalString }}
-              v-divider
+        v-col.mx-auto.text-center(cols="8")
+          div(
+            v-for="(ingredient, i) in recipe.ingredients"
+            :key="i"
+          )
+            div.text-wrap {{ ingredient.originalString }}
       v-row(justify="center")
         v-col.mx-2.mt-2(cols="8")
           v-row(v-for="(step, i) in recipe.steps" :key="i")
@@ -137,9 +135,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.column_wrapper {
-  column-count: 3
-}
-</style>

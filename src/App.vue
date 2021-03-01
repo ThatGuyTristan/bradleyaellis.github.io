@@ -2,23 +2,25 @@
     v-app
       v-app-bar(flat app color="white" light)
         v-row.flex-row.px-auto(v-if="!$vuetify.breakpoint.xs")
-          v-col.d-flex.flex-column.justify-start.mt-2(cols="4")
-            title.d-flex.align-start(class="main-logo") Recipes Lite
-            caption.d-flex.align-end(class="main-logo" v-if="!$vuetify.breakpoint.xs").
-              No blog, no fuss. Recipes done right.
-          v-col.d-flex.justify-center(cols="4")
+          v-col.d-flex.justify-center(cols="6")
             Search
-          v-col.d-flex.justify-end(cols="4")
+          v-col.d-flex.justify-end(cols="6")
             Random
         v-row.flex-row.px-auto(v-else)
-          v-col.d-flex.flex-column.mt-3(cols="3")
-            h3.d-flex.justify-center.text-center.ml-0.ml-n3(class="main-logo") Recipes Lite
-          v-col.d-flex.align-left.py-0(cols="7")
+          v-col.d-flex.align-left.py-0(cols="5")
             Search
+          v-col.d-flex.flex-column.mt-3(cols="5")
+            h1.d-flex.text-center(color="success" class="main-logo") Recipes Lite
           v-col.d-flex.justify-end.pr-0(cols="2")
             Random
       v-main
+        v-toolbar(dense).mb-3
+          v-toolbar-title.mx-auto(class="main-logo") No blog, no fuss. Recipes done right. Recipes lite.
         router-view(:key="$route.FullPath")
+        v-toolbar(bottom)
+          v-toolbar-title.mx-auto
+            span.mr-2(class="main-logo") Recipes Lite
+            span.caption Powered by Spoonacular
 </template>
 
 <script>
