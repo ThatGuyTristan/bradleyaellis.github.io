@@ -20,8 +20,10 @@
           v-row(v-if="recipe.image")
             v-img(:src="recipe.image" contain)
       v-row
-        v-col(cols="12")
-          p.overline.text-center Ready in: {{ findTime(recipe.readyInMinutes) }} || Makes {{ recipe.servings }} Servings
+        v-col.text-center(cols="12")
+          span.overline Ready in: {{ findTime(recipe.readyInMinutes) }}
+          span.overline  || Makes {{ recipe.servings }} Servings
+          span.overline(v-if="temperature")  || Bake at {{ temperature }} F
       v-row.ma-0(no-gutters)
         v-col.mx-auto.text-center(cols="8")
           div(
@@ -56,6 +58,17 @@ export default {
     },
     width(){
       return this.$vuetify.breakpoint.xs ? "100%" :  "66%"
+    },
+    temperature(){
+      let r = /\d{3}/;
+      let result;
+      console.log(this.recipe.steps),
+      this.recipe.steps.forEach(step => {
+        if(step.step.match(r)){
+          result = step.step.match(r)
+        }
+      })
+      return result ? result[0] : ""
     }
   },
   beforeMount(){
@@ -71,7 +84,7 @@ export default {
       if(time <= 60){
         return time + " minutes";
       } else {
-        return time % 60 + " hours"
+        return (time / 60) + " hours" + time % 60 + " minutes"
       }
     },
     determineRecipe(){
@@ -92,7 +105,6 @@ export default {
 
       axios.request(options)
         .then((response) => {
-          console.log("Response received.")
           this.mapRecipe(response.data.recipes[0])
       })
       .catch(function(error) {
